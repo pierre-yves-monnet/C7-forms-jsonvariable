@@ -1,0 +1,139 @@
+<strong>Pharmacy Outreach Form - PharmaTech</strong>
+
+<p>
+ Please fill required fields below
+</p>
+
+<form name="pharmacyOutreachFormThird" role="form" class="form-horizontal">
+  <div class="row">
+    <div class="col-lg-6">
+    </div>
+    <div class="col-lg-6">
+      <div class="control-group">
+        <label class="control-label"># of Rx</label>
+        <div class="controls">
+          <input type="text"
+                 ng-model="loan.PAGE_NO"
+                 class="form-control" />
+        </div>
+      </div>
+    </div>
+	<div class="col-lg-6">
+      <div class="control-group">
+        <label class="control-label">Again</label>
+        <div class="controls">
+          <input type="checkbox"
+                 cam-variable-name="again"
+				 cam-variable-type="Boolean"
+                 class="form-control" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="control-group">
+        <label class="control-label">Account Number</label>
+        <div class="controls">
+          <input type="text"
+                 ng-model="loan.ACCOUNT_NUMBER"
+                 class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="control-group">
+        <label class="control-label">ORDER NUMBER</label>
+        <div class="controls">
+          <input type="text"
+                 ng-model="loan.ORDER_NUMBER"
+                 class="form-control" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="control-group">
+        <label class="control-label">1st Attempt Comments</label>
+        <div class="controls">
+          <textarea
+                  rows="4"
+                  cols="30"
+                  class="form-control"
+                  ng-model="String"
+                  maxlength="250"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="control-group">
+        <label class="control-label">Outcome of Final Retail Outreach</label>
+        <div class="controls">
+          <select
+                  cam-variable-name="OutcomeofFinalRetailOutreach"
+                  cam-variable-type="String" >
+            <option value=""></option>
+            <option value="Verbal Received">Verbal Received</option>
+            <option value="Verbal Not Received">Verbal Not Received</option>
+            <option value="PSC Received">PSC Received</option>
+            <option value="RPh Refused">RPh Refused</option>
+            <option value="Fax Not Received">Fax Not Received</option>
+            <option value="Fax Received">Fax Received</option>
+            <option value="No Refills">No Refills</option>
+            <option value="Expired">Expired</option>
+            <option value="RPh Unavailable">RPh Unavailable</option>
+            <option value="No Answer/Long Wait">No Answer/Long Wait</option>
+            <option value="Unable to Transfer (Controlled)">Unable to Transfer (Controlled)</option>
+            <option value="OTC Not Covered">OTC Not Covered</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script cam-script type="text/form-script">
+    $scope.openThird = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      $scope.ThirdAttemptDateOpened = true;
+      $scope.dateOptions = { minDate: new Date() };
+    };
+    var loan = $scope.loan = {};
+
+    camForm.on('form-loaded', function() {
+
+      // fetch it now if it exists on the process
+      console.log("ask to fetch variable");
+
+      camForm.variableManager.fetchVariable('loan');
+
+      camForm.on('variables-fetched', function() {
+        // work with the variable (bind it to the current AngularJS $scope)
+        $scope.loan = camForm.variableManager.variableValue('loan');
+        // if the variable doesn't exist (on the start form for example), create it
+        if (!$scope.loan) {
+            var loan = $scope.loan = {'PAGE_NO': '1'};
+            // variable exist in the variable manager, but incorrectely (not a json type for example)
+            // delete it and recreate it correctly
+            camForm.variableManager.destroyVariable('loan');
+
+            camForm.variableManager.createVariable({
+              name: 'loan',
+              type: 'json',
+              value: loan
+           });
+        }
+      });
+
+    });
+  </script>
+</form>
