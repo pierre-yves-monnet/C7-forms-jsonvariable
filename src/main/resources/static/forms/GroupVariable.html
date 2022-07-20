@@ -112,44 +112,44 @@
 
     camForm.on('form-loaded', function() {
 
-    // call REST API info
-    console.log('Call /info');
+      // call REST API info
+      console.log('Call /info');
 
-    var self=$scope;
-    $scope.message="";
-    fetch('/info?name=Franck')
-    .then((resp) => resp.json())
-    .then((data) => {
-        console.log('value received='+data.message);
-        self.message=data.message;
-      })
-    .catch(function() {
-        console.log('Error during fetch');
-      });
+      var self=$scope;
+      $scope.message="";
+      fetch('/info?name=Franck')
+      .then((resp) => resp.json())
+      .then((data) => {
+          console.log('value received='+data.message);
+          self.message=data.message;
+        })
+      .catch(function() {
+          console.log('Error during fetch');
+        });
 
 
-      // fetch it now if it exists on the process
-      console.log("ask to fetch variable");
+        // fetch it now if it exists on the process
+        console.log("ask to fetch variable");
 
-      camForm.variableManager.fetchVariable('loan');
+        camForm.variableManager.fetchVariable('loan');
 
-      camForm.on('variables-fetched', function() {
-        // work with the variable (bind it to the current AngularJS $scope)
-        $scope.loan = camForm.variableManager.variableValue('loan');
-        // if the variable doesn't exist (on the start form for example), create it
-        if (!$scope.loan) {
-            var loan = $scope.loan = {'PAGE_NO': '1'};
-            // variable exist in the variable manager, but incorrectely (not a json type for example)
-            // delete it and recreate it correctly
-            camForm.variableManager.destroyVariable('loan');
+        camForm.on('variables-fetched', function() {
+          // work with the variable (bind it to the current AngularJS $scope)
+          $scope.loan = camForm.variableManager.variableValue('loan');
+          // if the variable doesn't exist (on the start form for example), create it
+          if (!$scope.loan) {
+              var loan = $scope.loan = {'PAGE_NO': '1'};
+              // variable exist in the variable manager, but incorrectely (not a json type for example)
+              // delete it and recreate it correctly
+              camForm.variableManager.destroyVariable('loan');
 
-            camForm.variableManager.createVariable({
-              name: 'loan',
-              type: 'json',
-              value: loan
-           });
-        }
-      });
+              camForm.variableManager.createVariable({
+                name: 'loan',
+                type: 'json',
+                value: loan
+             });
+          }
+        });
 
     });
   </script>
