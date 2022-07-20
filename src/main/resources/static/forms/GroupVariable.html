@@ -62,7 +62,8 @@
                   rows="4"
                   cols="30"
                   class="form-control"
-                  ng-model="String"
+                  ng-model="message"
+                  readonly
                   maxlength="250"></textarea>
         </div>
       </div>
@@ -110,6 +111,22 @@
     var loan = $scope.loan = {};
 
     camForm.on('form-loaded', function() {
+
+    // call REST API info
+    console.log('Call /info');
+
+    var self=$scope;
+    $scope.message="";
+    fetch('/info?name=Franck')
+    .then((resp) => resp.json())
+    .then((data) => {
+        console.log('value received='+data.message);
+        self.message=data.message;
+      })
+    .catch(function() {
+        console.log('Error during fetch');
+      });
+
 
       // fetch it now if it exists on the process
       console.log("ask to fetch variable");
